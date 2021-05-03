@@ -1,100 +1,125 @@
 pragma solidity ^0.6.2;
 
 contract Squaragon {
+
+	address public owner;
     address public player1;
     address public player2;
     address public player3; 
     address public player4;
 
-    uint p1R; 
-    uint p2R;
-    uint p3R; 
-    uint p4R; 
-    uint p1C; 
-    uint p2C; 
-    uint p3C; 
-    uint p4C;
-
-    uint gameSize;
-
-    uint256 gameBoard = 0;
-    uint players = 0;
+	uint256 board;
+	uint256 gameState;
+	/*
+	bits	| description
+	---------------------
+	23-0	| location of 4 to 1, row and collumn
+	28-26	| number of players
+	32-29	| board size
+	36-33	| is player 4 to 1 blocked
+	38-37	| winner
+	39		| is game done
+	100-105	| turn
+	*\
 
     constructor () public {
-        player1 = msg.sender;
-        players++;
+        owner = msg.sender;
+		gameState = 0;
     }
 
-    function movePlayer(uint curRow, uint curCol, uint row, uint col) private returns (bool){
-        if(row > gameSize || col > gameSize || occupied(row, col) || 
-        (row - curRow) > 1 || (curRow-row) > 1 || (col-curCol) > 1 || (curCol-col > 1)){
-            return false;
-        }
-        return true;
-    }
+	function move(uint8 direction) public {
+		require( gameState & (0b11<<37))
+		address internal addr = 0;
+		uint8 internal turn = (gameState >> 100) & 0b11;
+		if(turn == 0) {
+			addr = player1;
+		} else if(turn == 1){
+			addr = player2;
+		} else if(turn == 2){
+			addr = player3;
+		} else if(turn == 3){
+			addr = player4;
+		} 
+		uint8 internal offset = 6*turn;
+		uint8 internal row = (gameState >> (offset+3)) & 0b111;
+		uint8 internal col = (gameState >> (offset)) & 0b111;
+		require(addr = msg.sender);
+		if(direction == 0) { //up
+			require(isOpen(--row,col));
+		} else if(direction == 1) {//right
+			require(isOpen(row,++col));
+		} else if(direction == 2) {//down
+			require(isOpen(++row,col));
+		} else if(direction == 3) {//left
+			require(isOpen(--row,col));
+		}
+		uint8 internal position = (row << 3) + col;
+		gameState = gameState & ~(0b111111<<offset) | (position<<offset);
+		uint8 internal boardSize = (gameState >> 29) & 0b111;
+		uint8 internal location = (row*boardSize + col)<<3;
+		board = board & ~(0b1111 << location) | (1<<(turn+location));
+		if(isBlocked(turn++)) {
+			if(isBlocked(turn++)) {
+				if(isBlocked(turn++)) {
+					gameState = turn << 37;
+					gameState = gameState | (1<<39);
+				}
+			}			
+		}
+		gameState = gameState & ~(0b11<<100) | (turn<<100);
+	}
 
-    function move(uint row, uint col) public {
-        //need to manipulate gameboard after move
-        if(msg.sender == player1){
-            if(movePlayer(p1R, p1C, row, col)){
-                p1R = row;
-                p1C = col;
-                gameBoard = (1 << (3*(gameSize*row+col))) | gameBoard;
-            } 
-        } else if(msg.sender == player2){
-            if(movePlayer(p2R, p2C, row, col)){
-                p2R = row;
-                p2C = col;
-                gameBoard = (2 << (3*(gameSize*row+col))) | gameBoard;
 
-            } 
-        } else if(msg.sender == player3){
-            if(movePlayer(p3R, p3C, row, col)){
-                p3R = row;
-                p3C = col;
-                gameBoard = (3 << (3*(gameSize*row+col))) | gameBoard;
-            } 
-        } else if(msg.sender == player4){
-            if(movePlayer(p4R, p4C, row, col) == true){
-                p4R = row;
-                p4C = col;
-                gameBoard = (4 << (3*(gameSize*row+col))) | gameBoard;
-            } 
-        }
-    }
 
-    function start(uint gameSize_arg) internal {
-        gameSize = gameSize_arg;
-        
+	function isBlocked(uint8 player) private return bool{
+		if((gameState & (1<< (33+player)) != 0) {
+			return true;
+		}
+		player = player & 0b11;
+		uint8 internal row = (gameState >> (6*player+3)) & 0b111;
+		uint8 internal col = (gameState >> (6*player)) & 0b111;
+		bool internal result = ~(isOpen(row, col+1) & isOpen(row, col-1) & isOpen(row+1, col)& isOpen(row-1, col));
+		if(result) {
+			gameState = gameState | (1<< (33+player));
+		}
+		return result;
+	}
+
+    function start(uint8 gameSize) public {
+		require(msg.sender == owner);
+		require(gameSize-3<=5);
+		require((gameState>>26 && 0b111) == 4);
+        board = 0;
+		gameState = (gameSize<<29) + (0b100 << 26) + ((gameSize-1) << 21) + ((gameSize-1) << 18) + ((gameSize-1) << 15) + ((gameSize-1) << 9);
     }
 
     function reset() public {
-        gameSize = 6;
-        //give $$ back
+        require(msg.sender == owner);
+		gameState = 0;
     }
 
-    function payout(address winningPlayer) private {
-
+    function isOpen(uint8 row, uint8 col) private returns (bool){
+		uint8 internal boardSize = (gameState >> 29) & 0b111;
+		if(row> boardSize || col > boardSize) {
+			return false;
+		}
+        return  (board >> ((row * boardSize + col)<<3)) == 0;
     }
 
-    function occupied (uint row, uint col) private returns (bool){
-    
-        return (7 & (gameBoard >> (3 * (gameSize * row) + col))) != 0;
-    }
-
-    function addPlayer() public {
-        if(players == 1){
+    function join() public returns (uint8){
+		uint8 internal numOfPlayers = (gameState >> 26) & 0b111;
+		require(numOfPlayers<4);
+		if(numOfPlayers == 0){
+            player1 = msg.sender;
+        } else if(numOfPlayers == 1){
             player2 = msg.sender;
-            players++;
-        }
-        if(players == 2){
+        } else if(numOfPlayers == 2){
             player3 = msg.sender;
-            players++;
-        }
-        if(players == 3){
+        } else if(numOfPlayers == 3){
             player4 = msg.sender;
-            players++;
         }
+		numOfPlayers++;
+		gameState = gameState & ~(0b111<<26) | (numOfPlayers<<26);
     }
 
 }
