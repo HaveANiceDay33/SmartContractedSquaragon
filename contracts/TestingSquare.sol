@@ -27,8 +27,8 @@ contract Squaragon {
 		gameState = 0;
     }
 
-	function move(uint8 direction) public {
-		
+	function move(uint8 direction) view public returns (uint8) {
+	    return direction;
 	}
 
 	function isBlocked(uint8 player) private returns (bool){
