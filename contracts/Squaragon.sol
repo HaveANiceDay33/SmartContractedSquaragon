@@ -56,16 +56,17 @@ contract Squaragon {
 		} else if(direction == 2) {//down
 			require(isOpen(++row,col));
 		} else if(direction == 3) {//left
-			require(isOpen(--row,col));
+			require(isOpen(row,--col));
 		}
 		uint256 position = (row << 3) + col;
 		gameState = gameState & ~(63<<offset) | (position<<offset);
 		uint256 boardSize = (gameState >> 29) & 7;
 		uint256 location = (row*boardSize + col)*4;
 		board = board & ~(15 << location) | (1<<(turn+location));
-		if(isBlocked(turn++)) {
-			if(isBlocked(turn++)) {
-				if(isBlocked(turn++)) {
+		if(isBlocked(++turn)) {
+			if(isBlocked(++turn)) {
+				if(isBlocked(++turn)) {
+				    turn++;
 					gameState = (turn & 3) << 37;
 				}
 			}			
@@ -82,7 +83,7 @@ contract Squaragon {
 		player = player & 3;
 		uint256 row = (gameState >> (6*player+3)) & 7;
 		uint256 col = (gameState >> (6*player)) & 7;
-		bool result = !(isOpen(row, col+1) && isOpen(row, col-1) && isOpen(row+1, col)&& isOpen(row-1, col));
+		bool result = !(isOpen(row, col+1) || isOpen(row, col-1) || isOpen(row+1, col) || isOpen(row-1, col));
 		if(result) {
 			gameState = gameState | (1<< (33+player));
 		}
