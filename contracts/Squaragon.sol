@@ -24,7 +24,7 @@ contract Squaragon {
 	36-33	| is player 4 to 1 blocked
 	38-37	| winner
 	39		| is game active
-	55-63	| turn
+	63-55	| turn
 	*/
 
     constructor () public {
@@ -61,7 +61,7 @@ contract Squaragon {
 		uint256 position = (row << 3) + col;
 		gameState = gameState & ~(63<<offset) | (position<<offset);
 		uint256 boardSize = (gameState >> 29) & 7;
-		uint256 location = (row*boardSize + col)*3;
+		uint256 location = (row*boardSize + col)*4;
 		board = board & ~(15 << location) | (1<<(turn+location));
 		if(isBlocked(turn++)) {
 			if(isBlocked(turn++)) {
@@ -104,10 +104,10 @@ contract Squaragon {
 
     function isOpen(uint256 row, uint256 col) view private returns (bool){
 		uint256 boardSize = (gameState >> 29) & 7;
-		if(row> boardSize || col > boardSize) {
+		if(row>= boardSize || col >= boardSize) {
 			return false;
 		}
-        return  (board >> ((row * boardSize + col)<<3)) == 0;
+        return  (board & (15<<((row * boardSize + col)*4))) == 0;
     }
 
     function join() public{
