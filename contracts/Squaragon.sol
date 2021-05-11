@@ -8,8 +8,13 @@ contract Squaragon {
     address public player3; 
     address public player4;
 
-	uint256 board;
-	uint256 gameState;
+	uint256 public board;
+	/* board initial state:
+	1     2
+	3     4
+	*/
+	
+	uint256 public gameState;
 	/*
 	bits	| description
 	---------------------
@@ -27,10 +32,10 @@ contract Squaragon {
 		gameState = 0;
     }
 
-	function move(uint8 direction) public {
-		require(gameState & (1<<39));
-		address addr = 0;
-		uint8 turn = (gameState >> 55) & 3;
+	function move(uint256 direction) public {
+		require(gameState & (1<<39) != 0);
+		address addr;
+		uint256 turn = (gameState >> 55) & 3;
 		if(turn == 0) {
 			addr = player1;
 		} else if(turn == 1){
@@ -40,10 +45,10 @@ contract Squaragon {
 		} else if(turn == 3){
 			addr = player4;
 		} 
-		uint8 offset = 6*turn;
-		uint8 row = (gameState >> (offset+3)) & 7;
-		uint8 col = (gameState >> (offset)) & 7;
-		require(addr = msg.sender);
+		uint256 offset = 6*turn;
+		uint256 row =(gameState >> (offset+3)) & 7;
+		uint256 col =(gameState >> (offset)) & 7;
+		require(addr == msg.sender);
 		if(direction == 0) { //up
 			require(isOpen(--row,col));
 		} else if(direction == 1) {//right
@@ -53,10 +58,10 @@ contract Squaragon {
 		} else if(direction == 3) {//left
 			require(isOpen(--row,col));
 		}
-		uint8 position = (row << 3) + col;
+		uint256 position = (row << 3) + col;
 		gameState = gameState & ~(63<<offset) | (position<<offset);
-		uint8 boardSize = (gameState >> 29) & 7;
-		uint8 location = (row*boardSize + col)<<3;
+		uint256 boardSize = (gameState >> 29) & 7;
+		uint256 location = (row*boardSize + col)*3;
 		board = board & ~(15 << location) | (1<<(turn+location));
 		if(isBlocked(turn++)) {
 			if(isBlocked(turn++)) {
@@ -65,31 +70,31 @@ contract Squaragon {
 				}
 			}			
 		}
-		gameState = gameState & ~(3<<55) | (turn<<55);
+		gameState = gameState & ((uint256) (~(3<<55))) | (turn <<55);
 	}
 
 
 
-	function isBlocked(uint8 player) private returns (bool){
+	function isBlocked(uint256 player) private returns (bool){
 		if((gameState & (1<< (33+player))) != 0) {
 			return true;
 		}
 		player = player & 3;
-		uint8 row = (gameState >> (6*player+3)) & 7;
-		uint8 col = (gameState >> (6*player)) & 7;
-		bool result = ~(isOpen(row, col+1) & isOpen(row, col-1) & isOpen(row+1, col)& isOpen(row-1, col));
+		uint256 row = (gameState >> (6*player+3)) & 7;
+		uint256 col = (gameState >> (6*player)) & 7;
+		bool result = !(isOpen(row, col+1) && isOpen(row, col-1) && isOpen(row+1, col)&& isOpen(row-1, col));
 		if(result) {
 			gameState = gameState | (1<< (33+player));
 		}
 		return result;
 	}
 
-    function start(uint8 gameSize) public {
+    function start(uint256 gameSize) public {
 		require(msg.sender == owner);
 		require(gameSize-3<=5);
-		require((gameState>>26 && 7) == 4);
-        board = 0;
-		gameState = (1<<39)+ (gameSize<<29) + (4 << 26) + ((gameSize-1) << 21) + ((gameSize-1) << 18) + ((gameSize-1) << 15) + ((gameSize-1) << 9);
+		require((gameState>>26 & 7) == 4);
+        board = 1 + (2<<(4*(gameSize-1))) +  (4<<(4*(gameSize-1)*gameSize))+ (8<<(4*((gameSize-1)*gameSize+(gameSize-1))));
+		gameState = (1<<39)+ (gameSize<<29) + (4 << 26) + ((gameSize-1) << 21) + ((gameSize-1) << 18) + ((gameSize-1) << 15) + ((gameSize-1) << 6);
     }
 
     function reset() public {
@@ -97,17 +102,17 @@ contract Squaragon {
 		gameState = 0;
     }
 
-    function isOpen(uint8 row, uint8 col) private returns (bool){
-		uint8 boardSize = (gameState >> 29) & 7;
+    function isOpen(uint256 row, uint256 col) view private returns (bool){
+		uint256 boardSize = (gameState >> 29) & 7;
 		if(row> boardSize || col > boardSize) {
 			return false;
 		}
         return  (board >> ((row * boardSize + col)<<3)) == 0;
     }
 
-    function join() public returns (uint8){
+    function join() public{
 		require(gameState & (7 << 37) == 0);
-		uint8 numOfPlayers = (gameState >> 26) & 7;
+		uint256 numOfPlayers = (gameState >> 26) & 7;
 		require(numOfPlayers<4);
 		if(numOfPlayers == 0){
             player1 = msg.sender;
@@ -119,7 +124,7 @@ contract Squaragon {
             player4 = msg.sender;
         }
 		numOfPlayers++;
-		gameState = gameState & ~(7<<26) | (numOfPlayers<<26);
+		gameState = gameState & ((uint256) (~(7<<26))) | (numOfPlayers<<26);
     }
 
 }
