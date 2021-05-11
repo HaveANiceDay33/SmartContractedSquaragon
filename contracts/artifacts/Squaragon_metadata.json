@@ -12,34 +12,48 @@
 			},
 			{
 				"inputs": [],
-				"name": "join",
+				"name": "board",
 				"outputs": [
 					{
-						"internalType": "uint8",
+						"internalType": "uint256",
 						"name": "",
-						"type": "uint8"
+						"type": "uint256"
 					}
 				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "gameState",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "join",
+				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
 				"inputs": [
 					{
-						"internalType": "uint8",
+						"internalType": "uint256",
 						"name": "direction",
-						"type": "uint8"
+						"type": "uint256"
 					}
 				],
 				"name": "move",
-				"outputs": [
-					{
-						"internalType": "uint8",
-						"name": "",
-						"type": "uint8"
-					}
-				],
-				"stateMutability": "view",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -117,9 +131,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint8",
+						"internalType": "uint256",
 						"name": "gameSize",
-						"type": "uint8"
+						"type": "uint256"
 					}
 				],
 				"name": "start",
@@ -141,7 +155,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/TestingSquare.sol": "Squaragon"
+			"contracts/Squaragon.sol": "Squaragon"
 		},
 		"evmVersion": "istanbul",
 		"libraries": {},
@@ -155,11 +169,11 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/TestingSquare.sol": {
-			"keccak256": "0xce3638b14400a6f7fe5d47ad77a19c873cb03fdba8509a62d4beab973a963760",
+		"contracts/Squaragon.sol": {
+			"keccak256": "0x09b15f4b2b06aefd816fc682f129a4c42bd6fd76e3f96afcbcfd699be0022b05",
 			"urls": [
-				"bzz-raw://24def4659bce9038322c85b1ccb45cf57c92966c5be0e2e416caabef9da5b4ab",
-				"dweb:/ipfs/QmS7apJFC8Ji1wBDuV6ktF7VUfKgnBpwna9yWQZYJquWxc"
+				"bzz-raw://33325447f9ca713e4bd1c550306614e7ee09a90eb26e001cd93ccb37c8f997d5",
+				"dweb:/ipfs/QmfPiSVNzgHJfJypAm5EHnLbnLzHGFnoSw9wiU7TQhPjXB"
 			]
 		}
 	},

@@ -110,6 +110,7 @@ contract Squaragon {
 		}
         return  (board & (15<<((row * boardSize + col)*4))) == 0;
     }
+    
 
     function join() public{
 		require(gameState & (7 << 37) == 0);
@@ -118,10 +119,16 @@ contract Squaragon {
 		if(numOfPlayers == 0){
             player1 = msg.sender;
         } else if(numOfPlayers == 1){
+          //  require(player1 != msg.sender);
             player2 = msg.sender;
         } else if(numOfPlayers == 2){
+           // require(player1 != msg.sender);
+        //    require(player2 != msg.sender);
             player3 = msg.sender;
         } else if(numOfPlayers == 3){
+          //  require(player1 != msg.sender);
+            //require(player2 != msg.sender);
+            //require(player3 != msg.sender);
             player4 = msg.sender;
         }
 		numOfPlayers++;
