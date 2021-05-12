@@ -97,7 +97,7 @@ async function getBoard() {
 
     if (Squaragon.numPlayers == 4) {
         document.querySelector("#join").style.display = "none";
-        if (Squaragon.active != 1) {
+        if (Squaragon.active != 1 && Squaragon.address == Squaragon.p1) {
             document.querySelector(".wrap").style.display = "block";
         }
 
