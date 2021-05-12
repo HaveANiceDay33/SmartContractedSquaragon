@@ -15,6 +15,7 @@ contract Squaragon {
 	*/
 	
 	uint256 public gameState;
+	bool public gameOver;
 	/*
 	bits	| description
 	---------------------
@@ -30,6 +31,7 @@ contract Squaragon {
     constructor () public {
         owner = msg.sender;
 		gameState = 0;
+		gameOver = false;
     }
 
 	function move(uint256 direction) public {
@@ -68,6 +70,7 @@ contract Squaragon {
 				if(isBlocked(++turn)) {
 				    turn++;
 					gameState = (turn & 3) << 37;
+					gameOver = true;
 				}
 			}			
 		}
@@ -101,6 +104,7 @@ contract Squaragon {
     function reset() public {
         require(msg.sender == owner);
 		gameState = 0;
+		gameOver = false;
     }
 
     function isOpen(uint256 row, uint256 col) view private returns (bool){
@@ -116,6 +120,7 @@ contract Squaragon {
 		require(gameState & (7 << 37) == 0);
 		uint256 numOfPlayers = (gameState >> 26) & 7;
 		require(numOfPlayers<4);
+		gameOver = false;
 		if(numOfPlayers == 0){
             player1 = msg.sender;
         } else if(numOfPlayers == 1){

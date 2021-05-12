@@ -25,6 +25,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "gameOver",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "gameState",
 				"outputs": [
 					{
@@ -170,10 +183,10 @@
 	},
 	"sources": {
 		"contracts/Squaragon.sol": {
-			"keccak256": "0x09b15f4b2b06aefd816fc682f129a4c42bd6fd76e3f96afcbcfd699be0022b05",
+			"keccak256": "0xa76b78d10d68259f6326a47cf39b8101cb306a97fdf0b2b7a3572eef13054edd",
 			"urls": [
-				"bzz-raw://33325447f9ca713e4bd1c550306614e7ee09a90eb26e001cd93ccb37c8f997d5",
-				"dweb:/ipfs/QmfPiSVNzgHJfJypAm5EHnLbnLzHGFnoSw9wiU7TQhPjXB"
+				"bzz-raw://f7b9fb340c3f67ecd83a623f5e6a9f8d53a18d517a3f9098d35f44c8b01db2a6",
+				"dweb:/ipfs/QmNogcfFfprZnBTEcCKjMG1RomhkR7pMPT2tBoRpe9V8dE"
 			]
 		}
 	},
