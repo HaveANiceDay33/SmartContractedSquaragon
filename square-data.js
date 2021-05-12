@@ -1,5 +1,5 @@
 //remix 
-const squaragon_addr = "0x32d95A0ABB406Ab9918ADb35AcdF3D9773a13383";
+const squaragon_addr = "0x0413fCd7725B30BCDe6E1c5fD031B2343653A685";
 
 
 const squaragon_abi = [{

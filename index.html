@@ -1,0 +1,176 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8" />
+
+    <title>Smart Contracted Squaragon</title>
+    <!-- for connecting to metamask -->
+    <script src="./web3.min.js"></script>
+
+    <!-- this defines the Contract ID and ABI -->
+    <script src="./square-data.js" type="text/javascript"></script>
+    <script src="https://kit.fontawesome.com/f34bdf89e7.js" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <style>
+        #play-area {
+            display: grid;
+            height: 550px;
+            width: 550px;
+            margin: auto;
+        }
+        
+        .square {
+            display: flex;
+            width: 60px;
+            height: 60px;
+            align-items: center;
+            margin: auto;
+            justify-content: center;
+            font-size: 1em;
+            text-align: center;
+            border: 3px solid black;
+            transition: background 0.2s ease-in-out;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #winner {
+            display: none;
+        }
+        
+        #pGroup {
+            padding: 10px;
+            border: 2px solid black;
+            margin-bottom: 5px;
+        }
+        
+        #p1 {
+            color: green;
+        }
+        
+        #p2 {
+            color: blue;
+        }
+        
+        #p3 {
+            color: red;
+        }
+        
+        #p4 {
+            color: orange;
+        }
+        
+        #turn {
+            margin-bottom: 10px;
+            display: none;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            background-color: #c9c9c9;
+        }
+        
+        button,
+        input {
+            border-radius: 5px;
+            border: 2px solid black;
+            background-color: #cacaca;
+            cursor: pointer;
+            font-family: 'Roboto', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            transition: 0.5s;
+            display: block;
+            margin: 10px auto;
+        }
+        
+        button:hover {
+            background-color: grey;
+            transition: 0.5s;
+        }
+        
+        .row {
+            display: flex;
+        }
+        
+        .column {
+            text-align: center;
+            flex: 50%;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .big {
+            margin: 0px 50px;
+        }
+        
+        .wrap {
+            border-radius: 5px;
+            border: 2px solid black;
+            margin: 0px 50px;
+        }
+        
+        .upright button {
+            display: inline;
+        }
+        
+        .upright p {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <h1>Squaragon - By BK and Sam</h1>
+        <p id="connectedAddress"></p>
+        <div class="row">
+            <div class="column big">
+                <div id="pGroup">
+                    <p id="pn"></p>
+                    <p id="p1"></p>
+                    <p id="p2"></p>
+                    <p id="p3"></p>
+                    <p id="p4"></p>
+                </div>
+                <div class="row">
+                    <div class="column upright">
+                        <p>Move</p>
+                        <button id="mr"><i class="fas fa-arrow-right"></i></button>
+                        <button id="ml"><i class="fas fa-arrow-left"></i></button>
+                        <button id="mu"><i class="fas fa-arrow-up"></i></button>
+                        <button id="md"><i class="fas fa-arrow-down"></i></button>
+                    </div>
+                    <div class="column">
+                        <button id="reset">Reset <i class="fas fa-power-off"></i></button>
+                        <div class="wrap">
+                            <input id="size" type="number" size="4" maxlength="1" max="7" min="3" value="5"></input>
+
+                            <button id="start"><i class="fas fa-play"></i></button>
+                        </div>
+                        <button id="join">Join <i class="fas fa-sign-in-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="column big">
+                <h4 id="turn"></h4>
+                <button id="refresh"><i class="fas fa-retweet"></i></button>
+                <h2 id="winner"></h2>
+                <div id="play-area">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script type="text/javascript" src="/main.js"></script>
+
+
+</html>

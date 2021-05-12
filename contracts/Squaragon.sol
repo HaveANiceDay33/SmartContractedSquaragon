@@ -105,6 +105,10 @@ contract Squaragon {
         require(msg.sender == owner);
 		gameState = 0;
 		gameOver = false;
+		player1 = address(0x0);
+		player2 = address(0x0);
+		player3 = address(0x0);
+		player4 = address(0x0);
     }
 
     function isOpen(uint256 row, uint256 col) view private returns (bool){

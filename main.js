@@ -9,6 +9,7 @@ window.addEventListener('load', function() {
             })
             .then((accounts) => {
                 console.log("Connected to account id " + accounts[0]);
+                this.document.querySelector("#connectedAddress").innerHTML = `You are connected with address: ${accounts[0]}`;
                 window.Squaragon.address = accounts[0];
             });
     } else {
@@ -73,8 +74,34 @@ async function getBoard() {
         document.querySelector("#winner").innerHTML = `Player ${Squaragon.winner + 1} Wins!`;
         document.querySelector("#winner").style.display = "block";
     } else {
-        document.querySelector("#winner").style.display = "hidden";
+        document.querySelector("#winner").style.display = "none";
     }
+
+    if (Squaragon.active == 1) {
+        document.querySelector("#turn").style.display = "block";
+        document.querySelector("#reset").style.display = "none";
+        document.querySelector(".wrap").style.display = "none";
+    } else {
+        document.querySelector("#turn").style.display = "none";
+        if (Squaragon.address == Squaragon.p1) {
+            document.querySelector("#reset").style.display = "block";
+            document.querySelector(".wrap").style.display = "block";
+        }
+    }
+
+    if (Squaragon.numPlayers == 4) {
+        document.querySelector("#join").style.display = "none";
+        if (Squaragon.active != 1) {
+            document.querySelector(".wrap").style.display = "block";
+        }
+
+    } else {
+        document.querySelector("#join").style.display = "block";
+        document.querySelector(".wrap").style.display = "none";
+    }
+
+    document.querySelector("#pn").innerHTML = `Players Needed: ${4-Squaragon.numPlayers}`;
+
     try {
         let contract = new web3.eth.Contract(squaragon_abi, squaragon_addr);
         const board_funct = () => promisify(contract.methods.board());
