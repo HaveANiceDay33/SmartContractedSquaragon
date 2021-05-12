@@ -183,10 +183,10 @@
 	},
 	"sources": {
 		"contracts/Squaragon.sol": {
-			"keccak256": "0x8d912b1c8f370b15462ba0172587fd001724c61693334218c0d94b49628a591c",
+			"keccak256": "0x75a8fddfd20566dcf973e581aed89582c7aa069ea8cc2e54d15c65f8328eba64",
 			"urls": [
-				"bzz-raw://88bf29ae6e626ba294609298cd82e599cd18b32616995cb95bf2cefeabaf25ba",
-				"dweb:/ipfs/QmXJkGuDNQwf7PRAFa3ACvjutFCx88Qy918tMYqbrVKer7"
+				"bzz-raw://ea9d382052fe8ab5b9bba9051950add5cfac4906e2be358eb30d8298fa01d826",
+				"dweb:/ipfs/QmRi98CqFxGru9c718MVJqxswBtGTk7SAJ6dxM6H4kLPLF"
 			]
 		}
 	},

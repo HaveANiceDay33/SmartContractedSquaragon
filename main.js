@@ -19,6 +19,8 @@ window.addEventListener('load', function() {
     getBoard();
 })
 
+
+
 // This is a global data structure that models the game state.
 // Try inspecting it in the web console!
 window.Squaragon = {
@@ -70,12 +72,7 @@ async function move(direction) {
 async function getBoard() {
     await getGameState();
 
-    if (Squaragon.over == true) {
-        document.querySelector("#winner").innerHTML = `Player ${Squaragon.winner + 1} Wins!`;
-        document.querySelector("#winner").style.display = "block";
-    } else {
-        document.querySelector("#winner").style.display = "none";
-    }
+
 
     if (Squaragon.active == 1) {
         document.querySelector("#turn").style.display = "block";
@@ -87,6 +84,15 @@ async function getBoard() {
             document.querySelector("#reset").style.display = "block";
             document.querySelector(".wrap").style.display = "block";
         }
+    }
+
+    if (Squaragon.over == true) {
+        document.querySelector("#winner").innerHTML = `Player ${Squaragon.winner + 1} Wins!`;
+        document.querySelector("#winner").style.display = "block";
+        document.querySelector("#reset").style.display = "block";
+    } else {
+        document.querySelector("#winner").style.display = "none";
+        document.querySelector("#reset").style.display = "none";
     }
 
     if (Squaragon.numPlayers == 4) {
@@ -330,3 +336,7 @@ document.querySelector("#join").onclick = async function() {
 document.querySelector("#refresh").onclick = async function() {
     getBoard();
 }
+
+const interval = setInterval(function() {
+    getBoard();
+}, 5000);

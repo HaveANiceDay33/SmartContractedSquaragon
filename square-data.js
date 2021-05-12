@@ -1,8 +1,44 @@
 //remix 
-const squaragon_addr = "0x0413fCd7725B30BCDe6E1c5fD031B2343653A685";
+const squaragon_addr = "0x69FecD80D75DD887F062c0A210F9ccB77925c1D1";
 
 
 const squaragon_abi = [{
+        "inputs": [],
+        "name": "join",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{
+            "internalType": "uint256",
+            "name": "direction",
+            "type": "uint256"
+        }],
+        "name": "move",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "reset",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{
+            "internalType": "uint256",
+            "name": "gameSize",
+            "type": "uint256"
+        }],
+        "name": "start",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "inputs": [],
         "stateMutability": "nonpayable",
         "type": "constructor"
@@ -38,24 +74,6 @@ const squaragon_abi = [{
             "type": "uint256"
         }],
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "join",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [{
-            "internalType": "uint256",
-            "name": "direction",
-            "type": "uint256"
-        }],
-        "name": "move",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -111,24 +129,6 @@ const squaragon_abi = [{
             "type": "address"
         }],
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "reset",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [{
-            "internalType": "uint256",
-            "name": "gameSize",
-            "type": "uint256"
-        }],
-        "name": "start",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
     }
 ];
